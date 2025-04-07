@@ -106,7 +106,7 @@ jobs:
           tags:
 
       - name: Build docker image
-        uses: docker/build-push-actions@v5
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: false
@@ -135,7 +135,7 @@ jobs:
       - name: Set image tag output
         id: set_output
         run: echo "Image tag=$(echo ${{github.sha}} | cut -c1-7)" >> $GITHUB_OUTPUT
-        
+
     outputs:
       image_tag: ${{ steps.set_output.outputs.image_tag }}
         
