@@ -103,7 +103,10 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{env.REGISTRY}}/${{env.IMAGE}}
-          tags:
+          tags: |
+            type=sha,format=long
+            type=ref,event=branch
+            latest
 
       - name: Build docker image
         uses: docker/build-push-action@v5
