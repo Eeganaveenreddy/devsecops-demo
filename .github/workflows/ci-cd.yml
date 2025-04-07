@@ -145,7 +145,7 @@ jobs:
 
   update-k8s:
     name: Update k8s deployment file
-    runs-on: ubuntu:latest
+    runs-on: ubuntu-latest
     needs: [docker]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
