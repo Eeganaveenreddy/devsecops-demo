@@ -142,5 +142,44 @@ jobs:
 
     outputs:
       image_tag: ${{ steps.set_output.outputs.image_tag }}
+
+  update-k8s:
+    name: Update k8s deployment file
+    runs-on: ubuntu:latest
+    needs: [docker]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{secrets.TOKEN}}
+
+      - name: Setup git config
+        run: |
+          git config user.name "eganaveen"
+          git config user.email "enreddy619@gmail.com"
+
+      - name: Update k8s deployment file
+        env:
+          IMAGE_TAG: sha-${{github.sha}}
+          GITHUB_REPOsitory: ${{github.repository}}
+          REGISTRY: ghcr.io
+        run: |
+          # Define the new image with tag
+          NEW_IMAGE: ${{env.REGISTRY}}/${{env.GITHUB_REPOsitory}}:${{env.IMAGE_TAG}}
+
+          # Update the deployment file directly
+          sed -i "s/image: ${{env.REGISTRY}}/.*|image: ${NEW_IMAGE}|g"
+
+          # Verify the change
+          echo "Updated deployment to use image: ${NEW_IMAGE}"
+          grep -A 1 "image:" kubernetes/deployment.yaml
+
+      - name: Commit and push changes
+        run: |
+          git add kubernetes/deployment.yaml
+          git commit -m "Update Kubernetes deployment with new image tag: ${{needs.docker.outputs.image_tag}} [skip ci]" || echo "No changes to commit"
+          git push
+
         
     
