@@ -166,7 +166,7 @@ jobs:
           REGISTRY: ghcr.io
         run: |
           # Define the new image with tag
-          NEW_IMAGE: ${{env.REGISTRY}}/${{env.GITHUB_REPOsitory}}:${{env.IMAGE_TAG}}
+          NEW_IMAGE: "${{env.REGISTRY}}/${{env.GITHUB_REPOsitory}}:${{env.IMAGE_TAG}}"
 
           # Update the deployment file directly
           sed -i "s/image: ${{env.REGISTRY}}/.*|image: ${NEW_IMAGE}|g"
