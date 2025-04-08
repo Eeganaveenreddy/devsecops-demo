@@ -162,7 +162,7 @@ jobs:
       - name: Update k8s deployment file
         env:
           IMAGE_TAG: sha-${{github.sha}}
-          GITHUB_REPOsitory: ${{github.repository}}
+          GITHUB_REPOSITORY: ${{github.repository}}
           REGISTRY: ghcr.io
         run: |
           # Define the new image with tag
